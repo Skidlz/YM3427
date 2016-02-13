@@ -1,0 +1,99 @@
+PSS-80
+YM3427 pinout:
+5-6v  audio    ?5v sr_clock nc nc reset sr_clock
+
+clock sr_data  ?5v gnd      nc nc ?5v   gnd
+1     2        3   4        5  6  7     8
+;########
+data format:
+address, value
+;########
+timing:
+master clock = 1.39Mhz
+data clock = 86,875Hz
+;--------
+3.316ms delay between note on and note oct message
+162us-71.5us
+90.5 us delay between address and data
+;########
+;--------
+register 0-7 = chan values
+1OOO xxxx;4-6 = Octave
+1xxx NNNN; 0-3 = Note+(Note/3)+1
+;--------
+registers 8-13 = Instrument
+1Rxx xxxx;6 = Retrigger
+1xSx xxxx;5 = Staccato
+1xxE xxxx;4 = Envelope sustain
+1xxx Vxxx;3 = Vibrato
+1xxx xDDx;2-1 = Detune
+1xxx xxxE;0 = Volume/Emphasis
+;--------
+registers 14-16 ?
+;--------
+registers 16-21 = Effect/LFO
+1Txx xxxx;6 = Tremolo
+1xVV xxxx;4-5 = Vib depth
+1xxx Nxxx;3 = Noise gate
+1xxx xSSS;0-2 = Speed (bits out of order)
+      021 (correct order)
+	  I (inverted)
+;--------
+registers 22-23 ?
+;--------
+registers 24-29 = Envelope
+1??x xxxx;5-6 same as brightness?
+1xxr xxxx;4 = Reverb (instead of release)
+1xxx Sxxx;3 = Sustain
+1xxx xRxx;2 = Release
+1xxx xxDx;1 = Decay
+1xxx xxxA;0 = Attack
+;--------
+registers 30-31 ?
+;random writes yield nothing
+;--------
+registers 32-37 = PWM/Volume
+1Exx xxxx; 6 = effect PWM
+1xBB Bxxx; 3-5 = brightness
+1xxx xVVV; 0-2 = volume
+1111 0VVV; value 240-247 = cymbal noise
+1111 1VVV; value 240-247 = white noise
+;---------
+registers 38-41 ?
+;--------
+register 42 = ?
+;has to do with sending brightness
+;---------
+register 43 
+;writing can cause glitches
+;---------
+registers 44-127 ?
+;---------
+send brightness
+32:138
+33:138
+34:138
+35:138
+36:138
+37:138
+42:129
+;-----------
+send length
+13:136
+29:163
+12:136
+28:163
+11:136
+27:163
+10:136
+26:163
+9:136
+25:163
+8:136
+24:163
+;------------
+send note on
+8-13;chan : 144/145/152/153/177;voice
+chan - 8 : OOOONNNN ;O=Octave, N=note
+8-13;chan : 192/193/200/201/225;voice + 48
+;------------
