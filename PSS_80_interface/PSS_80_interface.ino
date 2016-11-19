@@ -26,7 +26,7 @@ void setup(){
   Serial.begin(31250); //MIDI baud
   // Setup IO Pins
   // PORTB pin1 = reset
-  // PORTB pin2(0?) = serial clock 
+  // PORTB pin0 = serial clock 
   // PORTD pin7 = serial data
   DDRB = 0xff;
   DDRD = 0b11111110; //0=input
